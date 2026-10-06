@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "benchmark_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,99}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evaluation_mode": {
+      "enum": [
+        "llm_only",
+        "graph_llm",
+        "graph_llm_oracle",
+        "deterministic_graph"
+      ]
+    },
+    "capra_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "capra_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "redagent_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "redagent_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "llm_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "llm_model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "llm_parameters": {
+      "type": "object"
+    },
+    "goal_reached": {
+      "type": "boolean"
+    },
+    "steps_to_goal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "selected_operator_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "execution_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "success",
+              "failure",
+              "rejected",
+              "error",
+              "skipped"
+            ]
+          },
+          "elapsed_seconds": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "operator_id",
+          "status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "stop_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "invalid_action": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "success",
+              "failure",
+              "rejected",
+              "error",
+              "skipped"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "step"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "execution_time_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "failed_executions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "invalid_actions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "operator_bindings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "initial_state_digest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "seed": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "benchmark_version",
+    "scenario_id",
+    "scenario_version",
+    "run_id",
+    "timestamp",
+    "evaluation_mode",
+    "capra_version",
+    "capra_commit",
+    "redagent_version",
+    "redagent_commit",
+    "llm_provider",
+    "llm_model",
+    "llm_parameters",
+    "goal_reached",
+    "steps_to_goal",
+    "selected_operator_ids",
+    "execution_results",
+    "stop_reason",
+    "execution_trace",
+    "execution_time_seconds",
+    "initial_state_digest",
+    "synthetic"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "goal_reached": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "steps_to_goal": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "goal_reached": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "steps_to_goal": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  ]
+}

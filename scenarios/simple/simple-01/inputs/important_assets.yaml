@@ -1,0 +1,12 @@
+assets:
+  - id: k8s:secret:production:production-db-secret
+    name: production-db-secret
+    type: secret
+    cloud: k8s
+    goal_candidate: true
+    asset_category: high
+entry_points:
+  - id: k8s:serviceaccount:application:webapp
+    name: webapp
+    type: serviceaccount
+    cloud: k8s

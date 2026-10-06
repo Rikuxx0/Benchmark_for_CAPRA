@@ -1,0 +1,3 @@
+case_id: P-CONN-02
+fixture: tests/fixtures/planner/perfect_graph.json
+assertion: resource_control produced by op-c enables op-f

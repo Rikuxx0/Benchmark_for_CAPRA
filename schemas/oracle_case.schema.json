@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^O-[0-9]{2}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected": {
+      "enum": [
+        "Allow",
+        "Reject"
+      ]
+    },
+    "request": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_node_id": {
+          "type": "string",
+          "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+        },
+        "graph_digest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scope": {
+          "type": "object"
+        },
+        "runtime_state": {
+          "type": "object"
+        },
+        "candidate_operator_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "registered_action_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "framework_plan": {
+          "type": "object",
+          "properties": {
+            "framework": {
+              "type": "string",
+              "minLength": 1
+            },
+            "module": {
+              "type": "string",
+              "minLength": 1
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target_node_id": {
+              "type": "string",
+              "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+            }
+          },
+          "required": [
+            "framework",
+            "module",
+            "operation",
+            "target_node_id"
+          ],
+          "additionalProperties": false
+        },
+        "dry_run": {
+          "const": true
+        }
+      },
+      "required": [
+        "request_id",
+        "scenario_id",
+        "operator_id",
+        "target_node_id",
+        "graph_digest",
+        "state_version",
+        "scope",
+        "runtime_state",
+        "candidate_operator_ids",
+        "registered_action_id",
+        "approval_ids",
+        "framework_plan",
+        "dry_run"
+      ],
+      "additionalProperties": false
+    },
+    "setup_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_node_id": {
+            "type": "string",
+            "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+          },
+          "graph_digest": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scope": {
+            "type": "object"
+          },
+          "runtime_state": {
+            "type": "object"
+          },
+          "candidate_operator_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "registered_action_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "approval_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "framework_plan": {
+            "type": "object",
+            "properties": {
+              "framework": {
+                "type": "string",
+                "minLength": 1
+              },
+              "module": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_node_id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              }
+            },
+            "required": [
+              "framework",
+              "module",
+              "operation",
+              "target_node_id"
+            ],
+            "additionalProperties": false
+          },
+          "dry_run": {
+            "const": true
+          }
+        },
+        "required": [
+          "request_id",
+          "scenario_id",
+          "operator_id",
+          "target_node_id",
+          "graph_digest",
+          "state_version",
+          "scope",
+          "runtime_state",
+          "candidate_operator_ids",
+          "registered_action_id",
+          "approval_ids",
+          "framework_plan",
+          "dry_run"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "mutation_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "high_level_operator_correct": {
+      "type": "boolean"
+    },
+    "synthetic": {
+      "const": true
+    }
+  },
+  "required": [
+    "case_id",
+    "name",
+    "description",
+    "expected",
+    "request",
+    "setup_requests",
+    "mutation_fields",
+    "high_level_operator_correct",
+    "synthetic"
+  ],
+  "additionalProperties": false
+}

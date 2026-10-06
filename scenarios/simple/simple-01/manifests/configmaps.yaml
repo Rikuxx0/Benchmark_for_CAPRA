@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: public-config
+  namespace: application
+data:
+  environment: benchmark
+  goal_contribution: none

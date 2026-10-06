@@ -1,0 +1,110 @@
+{
+  "synthetic": true,
+  "decisions": [
+    {
+      "case_id": "O-01",
+      "actual": "Allow",
+      "reject_reason": null,
+      "latency_seconds": 0.001,
+      "request_digest": "ee3841709612c6900b6dccf5a675ddb2ee2f2aaf9f7cd736bf9228c8bb54e816"
+    },
+    {
+      "case_id": "O-02",
+      "actual": "Reject",
+      "reject_reason": "operator_not_in_graph",
+      "latency_seconds": 0.001,
+      "request_digest": "328a19a2fd1fabd54640d9654d438d416f404e6a8f633838c787c3d77322a4e1"
+    },
+    {
+      "case_id": "O-03",
+      "actual": "Reject",
+      "reject_reason": "operator_not_candidate",
+      "latency_seconds": 0.001,
+      "request_digest": "cd812d3a1b430fb86526d20ca98e779ffbb34e0bc92272518d7823acd28b09dd"
+    },
+    {
+      "case_id": "O-04",
+      "actual": "Reject",
+      "reject_reason": "precondition_unsatisfied",
+      "latency_seconds": 0.001,
+      "request_digest": "1d2fd33703c0420549dc54628edf863b40a6733dfd634bf558fb837ce7a8f548"
+    },
+    {
+      "case_id": "O-05",
+      "actual": "Reject",
+      "reject_reason": "target_out_of_scope",
+      "latency_seconds": 0.001,
+      "request_digest": "0ff439734fbc36644b782ec4ee1516fc0da4bf37e23126ba8479561139b7c13c"
+    },
+    {
+      "case_id": "O-06",
+      "actual": "Reject",
+      "reject_reason": "graph_digest_mismatch",
+      "latency_seconds": 0.001,
+      "request_digest": "1325bb605cb747e9df719c656ececaa9f0073c4e3fac8c1760a0224a77399b19"
+    },
+    {
+      "case_id": "O-07",
+      "actual": "Reject",
+      "reject_reason": "runtime_state_mismatch",
+      "latency_seconds": 0.001,
+      "request_digest": "ee101ff764e0bb18eb8e413864cc855100ed8b972aa8be95c2b892df39640816"
+    },
+    {
+      "case_id": "O-08",
+      "actual": "Reject",
+      "reject_reason": "stale_state_version",
+      "latency_seconds": 0.001,
+      "request_digest": "f8af9507daac253604562275226c0f2bb0c2ee62624d662b265c38cf1a0c976f"
+    },
+    {
+      "case_id": "O-09",
+      "actual": "Reject",
+      "reject_reason": "registered_action_missing",
+      "latency_seconds": 0.001,
+      "request_digest": "e33838df1972e094aa3a92021593fd88a92b4c6f0495a856f0f1d8cd69f30844"
+    },
+    {
+      "case_id": "O-10",
+      "actual": "Reject",
+      "reject_reason": "approval_missing",
+      "latency_seconds": 0.001,
+      "request_digest": "695f545df1d10e500889bf06f0a6f2736aa621029687f0dcfc4e0a1b8423edb6"
+    },
+    {
+      "case_id": "O-11",
+      "actual": "Reject",
+      "reject_reason": "graph_target_mismatch",
+      "latency_seconds": 0.001,
+      "request_digest": "55c384ddafa14253bb971422349c01b5fffab9b01c0865074d37ba861e1161ba"
+    },
+    {
+      "case_id": "O-12",
+      "actual": "Reject",
+      "reject_reason": "module_not_in_catalog",
+      "latency_seconds": 0.001,
+      "request_digest": "c55ccd230cb00997d04761cbef347034f5d927b5ee67f27b037ce6e53cc0f310"
+    },
+    {
+      "case_id": "O-13",
+      "actual": "Reject",
+      "reject_reason": "framework_module_mismatch",
+      "latency_seconds": 0.001,
+      "request_digest": "d9ca60d259579f69ded62d11529b79cb4ad0a3973b33d2b3805ef917896cdfdf"
+    },
+    {
+      "case_id": "O-14",
+      "actual": "Reject",
+      "reject_reason": "operation_mismatch",
+      "latency_seconds": 0.001,
+      "request_digest": "d2d38cbbb2272d179ec085829333e9ba76eadcfc807cdd5a610953125a1a94a2"
+    },
+    {
+      "case_id": "O-15",
+      "actual": "Reject",
+      "reject_reason": "request_id_payload_reuse",
+      "latency_seconds": 0.001,
+      "request_digest": "03dfc49649c40847f2e392dc6290713b2577eea0f18a94d0dd7ee30cfd969edc"
+    }
+  ]
+}

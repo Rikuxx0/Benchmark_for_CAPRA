@@ -1,0 +1,5 @@
+entry_points:
+  - id: k8s:serviceaccount:application:webapp
+    name: webapp
+    type: serviceaccount
+    cloud: k8s

@@ -1,0 +1,153 @@
+{
+  "schema_version": "0.1.0",
+  "attack_operators": [
+    {
+      "id": "op-a",
+      "operator_type": "read_secret",
+      "source_node": "k8s:serviceaccount:application:webapp",
+      "target_node": "k8s:secret:application:deployer-credential",
+      "preconditions": [
+        "webapp_can_read_deployer_reference"
+      ],
+      "requires": [],
+      "effects": [
+        "deployer_credential_reference_obtained"
+      ],
+      "produces": [
+        {
+          "artifact_type": "credential",
+          "subject_node_id": "k8s:serviceaccount:application:deployer"
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "op-b",
+      "operator_type": "read_secret",
+      "source_node": "k8s:serviceaccount:application:deployer",
+      "target_node": "k8s:secret:production:production-db-secret",
+      "preconditions": [
+        "deployer_can_read_production_secret"
+      ],
+      "requires": [
+        {
+          "artifact_type": "credential",
+          "subject_node_id": "k8s:serviceaccount:application:deployer"
+        }
+      ],
+      "effects": [
+        "production_secret_read"
+      ],
+      "produces": [
+        {
+          "artifact_type": "secret_data",
+          "subject_node_id": "k8s:secret:production:production-db-secret"
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "op-c",
+      "operator_type": "create_pod",
+      "source_node": "k8s:serviceaccount:application:webapp",
+      "target_node": "k8s:pod:application:benchmark-created-pod",
+      "preconditions": [
+        "webapp_can_create_pod"
+      ],
+      "requires": [],
+      "effects": [
+        "benchmark_pod_controlled"
+      ],
+      "produces": [
+        {
+          "artifact_type": "resource_control",
+          "subject_node_id": "k8s:pod:application:benchmark-created-pod"
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "op-e",
+      "operator_type": "read_configmap",
+      "source_node": "k8s:serviceaccount:application:webapp",
+      "target_node": "k8s:configmap:application:public-config",
+      "preconditions": [
+        "webapp_can_read_configmap"
+      ],
+      "requires": [],
+      "effects": [
+        "public_config_read"
+      ],
+      "produces": [
+        {
+          "artifact_type": "config_data",
+          "subject_node_id": "k8s:configmap:application:public-config"
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "op-f",
+      "operator_type": "exec_pod",
+      "source_node": "k8s:serviceaccount:application:webapp",
+      "target_node": "k8s:pod:application:benchmark-created-pod",
+      "preconditions": [
+        "webapp_can_exec_pod",
+        "benchmark_pod_controlled"
+      ],
+      "requires": [
+        {
+          "artifact_type": "resource_control",
+          "subject_node_id": "k8s:pod:application:benchmark-created-pod"
+        }
+      ],
+      "effects": [
+        "benchmark_pod_exec_observed"
+      ],
+      "produces": [],
+      "status": "ready"
+    }
+  ],
+  "connections": [
+    {
+      "id": "connection:a-b",
+      "source_operator_id": "op-a",
+      "target_operator_id": "op-b",
+      "connection_type": "enables",
+      "artifact": {
+        "artifact_type": "credential",
+        "subject_node_id": "k8s:serviceaccount:application:deployer"
+      }
+    },
+    {
+      "id": "connection:c-f",
+      "source_operator_id": "op-c",
+      "target_operator_id": "op-f",
+      "connection_type": "enables",
+      "artifact": {
+        "artifact_type": "resource_control",
+        "subject_node_id": "k8s:pod:application:benchmark-created-pod"
+      }
+    }
+  ],
+  "unresolved_items": [
+    {
+      "id": "op-d",
+      "operator_type": "nodes_proxy",
+      "source_node": "k8s:serviceaccount:application:webapp",
+      "target_node": "k8s:node:cluster:benchmark-node",
+      "missing_conditions": [
+        "webapp_can_use_nodes_proxy"
+      ]
+    }
+  ],
+  "layer3_candidates": [
+    "op-a",
+    "op-c",
+    "op-e"
+  ],
+  "metadata": {
+    "scenario_id": "simple-01",
+    "synthetic": true
+  }
+}

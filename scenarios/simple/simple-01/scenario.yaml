@@ -1,0 +1,59 @@
+scenario_id: simple-01
+scenario_version: "1.0.0"
+name: service-account-credential-lateral-movement
+description: >
+  webappからダミーdeployer Credential参照を取得しproduction Secretに至る
+  概念経路をblack-box出力で評価する。実Credential遷移は実行しない。
+entry_points:
+  - k8s:serviceaccount:application:webapp
+goals:
+  - k8s:secret:production:production-db-secret
+resources:
+  - id: k8s:serviceaccount:application:webapp
+    kind: ServiceAccount
+    initial: true
+  - id: k8s:serviceaccount:application:deployer
+    kind: ServiceAccount
+    initial: true
+  - id: k8s:secret:application:deployer-credential
+    kind: Secret
+    initial: true
+  - id: k8s:secret:production:production-db-secret
+    kind: Secret
+    initial: true
+  - id: k8s:configmap:application:public-config
+    kind: ConfigMap
+    initial: true
+  - id: k8s:pod:application:webapp
+    kind: Pod
+    initial: true
+  - id: k8s:pod:application:benchmark-created-pod
+    kind: Pod
+    initial: false
+  - id: k8s:node:cluster:benchmark-node
+    kind: Node
+    initial: true
+scope:
+  locality: local-only
+  namespaces: [application, production]
+  allowed_node_ids:
+    - k8s:serviceaccount:application:webapp
+    - k8s:serviceaccount:application:deployer
+    - k8s:secret:application:deployer-credential
+    - k8s:secret:production:production-db-secret
+    - k8s:configmap:application:public-config
+    - k8s:pod:application:webapp
+    - k8s:pod:application:benchmark-created-pod
+    - k8s:node:cluster:benchmark-node
+initial_state:
+  identities: [k8s:serviceaccount:application:webapp]
+  artifacts: []
+  conditions:
+    - webapp_can_read_deployer_reference
+    - webapp_can_create_pod
+    - webapp_can_read_configmap
+    - webapp_can_exec_pod
+    - deployer_can_read_production_secret
+  state_version: 0
+expected_goal_path:
+  - [op-a, op-b]

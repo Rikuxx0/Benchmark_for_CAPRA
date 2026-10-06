@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "attack_operators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_node": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": true
+              }
+            ]
+          },
+          "target_node": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": true
+              }
+            ]
+          },
+          "preconditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "requires": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "artifact_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subject_node_id": {
+                  "type": "string",
+                  "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                },
+                "properties": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "artifact_type",
+                "subject_node_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "produces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "artifact_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subject_node_id": {
+                  "type": "string",
+                  "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                },
+                "properties": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "artifact_type",
+                "subject_node_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "missing_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "operator_type",
+          "source_node",
+          "target_node",
+          "preconditions",
+          "requires",
+          "effects",
+          "produces"
+        ],
+        "additionalProperties": true,
+        "anyOf": [
+          {
+            "required": [
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "operator_id"
+            ]
+          }
+        ]
+      }
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "connection_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact": {
+            "type": "object",
+            "properties": {
+              "artifact_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subject_node_id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              },
+              "properties": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "artifact_type",
+              "subject_node_id"
+            ],
+            "additionalProperties": false
+          },
+          "condition": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "source_operator_id",
+          "target_operator_id",
+          "connection_type"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "unresolved_items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "layer3_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "attack_operators",
+    "connections",
+    "unresolved_items"
+  ],
+  "additionalProperties": true
+}

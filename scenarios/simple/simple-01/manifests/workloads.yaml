@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+  namespace: application
+  labels:
+    benchmark.scenario: simple-01
+spec:
+  serviceAccountName: webapp
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10000
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: placeholder
+      image: alpine:3.21.3
+      imagePullPolicy: Never
+      command: ["sleep", "infinity"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 8Mi
+        limits:
+          cpu: 100m
+          memory: 32Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-benchmark
+  namespace: application
+spec:
+  podSelector: {}
+  policyTypes: ["Ingress", "Egress"]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-benchmark
+  namespace: production
+spec:
+  podSelector: {}
+  policyTypes: ["Ingress", "Egress"]

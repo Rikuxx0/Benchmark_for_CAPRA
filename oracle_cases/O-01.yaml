@@ -1,0 +1,51 @@
+{
+  "case_id": "O-01",
+  "name": "valid execution plan",
+  "description": "All canonical fields agree.",
+  "expected": "Allow",
+  "request": {
+    "request_id": "oracle-request-001",
+    "scenario_id": "simple-01",
+    "operator_id": "op-b",
+    "target_node_id": "k8s:secret:production:production-db-secret",
+    "graph_digest": "sha256:canonical-graph-v1",
+    "state_version": 7,
+    "scope": {
+      "locality": "local-only",
+      "allowed_node_ids": [
+        "k8s:secret:production:production-db-secret"
+      ]
+    },
+    "runtime_state": {
+      "state_version": 7,
+      "state_digest": "sha256:canonical-state-v7",
+      "conditions": [
+        "deployer_can_read_production_secret"
+      ],
+      "artifacts": [
+        {
+          "artifact_type": "credential",
+          "subject_node_id": "k8s:serviceaccount:application:deployer"
+        }
+      ]
+    },
+    "candidate_operator_ids": [
+      "op-b"
+    ],
+    "registered_action_id": "action.read-production-secret",
+    "approval_ids": [
+      "approval-simple-01"
+    ],
+    "framework_plan": {
+      "framework": "kubernetes",
+      "module": "core/v1",
+      "operation": "get_secret",
+      "target_node_id": "k8s:secret:production:production-db-secret"
+    },
+    "dry_run": true
+  },
+  "setup_requests": [],
+  "mutation_fields": [],
+  "high_level_operator_correct": true,
+  "synthetic": true
+}

@@ -1,0 +1,3 @@
+case_id: P-PATH-01
+expected_path: [op-a, op-b]
+assertion: goal_path_recall is 1.0 for the perfect fixture

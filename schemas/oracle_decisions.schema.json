@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "synthetic": {
+      "type": "boolean"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^O-[0-9]{2}$"
+          },
+          "actual": {
+            "enum": [
+              "Allow",
+              "Reject"
+            ]
+          },
+          "reject_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "latency_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "request_digest": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "case_id",
+          "actual",
+          "reject_reason",
+          "request_digest"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "synthetic",
+    "decisions"
+  ],
+  "additionalProperties": false
+}

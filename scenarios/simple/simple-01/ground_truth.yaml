@@ -1,0 +1,122 @@
+scenario_id: simple-01
+scenario_version: "1.0.0"
+operators:
+  - operator_id: op-a
+    operator_type: read_secret
+    source_node: {id: "k8s:serviceaccount:application:webapp"}
+    target_node: {id: "k8s:secret:application:deployer-credential"}
+    preconditions: [webapp_can_read_deployer_reference]
+    requires: []
+    effects: [deployer_credential_reference_obtained]
+    produces:
+      - artifact_type: credential
+        subject_node_id: k8s:serviceaccount:application:deployer
+    expected_result: success
+    goal_contribution: direct
+    planner_expectation: generated
+  - operator_id: op-b
+    operator_type: read_secret
+    source_node: {id: "k8s:serviceaccount:application:deployer"}
+    target_node: {id: "k8s:secret:production:production-db-secret"}
+    preconditions: [deployer_can_read_production_secret]
+    requires:
+      - artifact_type: credential
+        subject_node_id: k8s:serviceaccount:application:deployer
+    effects: [production_secret_read]
+    produces:
+      - artifact_type: secret_data
+        subject_node_id: k8s:secret:production:production-db-secret
+    expected_result: goal
+    goal_contribution: direct
+    planner_expectation: generated
+  - operator_id: op-c
+    operator_type: create_pod
+    source_node: {id: "k8s:serviceaccount:application:webapp"}
+    target_node: {id: "k8s:pod:application:benchmark-created-pod"}
+    preconditions: [webapp_can_create_pod]
+    requires: []
+    effects: [benchmark_pod_controlled]
+    produces:
+      - artifact_type: resource_control
+        subject_node_id: k8s:pod:application:benchmark-created-pod
+    expected_result: success
+    goal_contribution: alternative
+    planner_expectation: generated
+  - operator_id: op-d
+    operator_type: nodes_proxy
+    source_node: {id: "k8s:serviceaccount:application:webapp"}
+    target_node: {id: "k8s:node:cluster:benchmark-node"}
+    preconditions: [webapp_can_use_nodes_proxy]
+    requires: []
+    effects: []
+    produces: []
+    expected_result: failure
+    goal_contribution: none
+    planner_expectation: unresolved
+    missing_conditions: [webapp_can_use_nodes_proxy]
+    failure_reason: RBAC permission denied; no nodes/proxy grant
+  - operator_id: op-e
+    operator_type: read_configmap
+    source_node: {id: "k8s:serviceaccount:application:webapp"}
+    target_node: {id: "k8s:configmap:application:public-config"}
+    preconditions: [webapp_can_read_configmap]
+    requires: []
+    effects: [public_config_read]
+    produces:
+      - artifact_type: config_data
+        subject_node_id: k8s:configmap:application:public-config
+    expected_result: success
+    goal_contribution: none
+    planner_expectation: generated
+  - operator_id: op-f
+    operator_type: exec_pod
+    source_node: {id: "k8s:serviceaccount:application:webapp"}
+    target_node: {id: "k8s:pod:application:benchmark-created-pod"}
+    preconditions: [webapp_can_exec_pod, benchmark_pod_controlled]
+    requires:
+      - artifact_type: resource_control
+        subject_node_id: k8s:pod:application:benchmark-created-pod
+    effects: [benchmark_pod_exec_observed]
+    produces: []
+    expected_result: success
+    goal_contribution: alternative
+    planner_expectation: generated
+connections:
+  - source_operator: op-a
+    target_operator: op-b
+    type: enables
+    expected: true
+    artifact:
+      artifact_type: credential
+      subject_node_id: k8s:serviceaccount:application:deployer
+  - source_operator: op-c
+    target_operator: op-f
+    type: enables
+    expected: true
+    artifact:
+      artifact_type: resource_control
+      subject_node_id: k8s:pod:application:benchmark-created-pod
+  - source_operator: op-e
+    target_operator: op-b
+    type: enables
+    expected: false
+  - source_operator: op-e
+    target_operator: op-a
+    type: enables
+    expected: false
+  - source_operator: op-c
+    target_operator: op-b
+    type: enables
+    expected: false
+expected_goal_paths:
+  - [op-a, op-b]
+operator_type_aliases:
+  "k8s:read_secret": read_secret
+  read_kubernetes_secret: read_secret
+  "k8s:create_pod": create_pod
+  create_workload: create_pod
+  "k8s:nodes_proxy": nodes_proxy
+  use_nodes_proxy_rce: nodes_proxy
+  "k8s:read_configmap": read_configmap
+  "k8s:exec_pod": exec_pod
+  exec_in_workload: exec_pod

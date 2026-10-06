@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {"id": "k8s:serviceaccount:application:webapp", "name": "webapp", "type": "serviceaccount", "cloud": "k8s", "is_entry": true},
+    {"id": "k8s:serviceaccount:application:deployer", "name": "deployer", "type": "serviceaccount", "cloud": "k8s"},
+    {"id": "k8s:secret:application:deployer-credential", "name": "deployer-credential", "type": "secret", "cloud": "k8s"},
+    {"id": "k8s:secret:production:production-db-secret", "name": "production-db-secret", "type": "secret", "cloud": "k8s", "goal_candidate": true, "is_goal": true},
+    {"id": "k8s:configmap:application:public-config", "name": "public-config", "type": "configmap", "cloud": "k8s"},
+    {"id": "k8s:pod:application:benchmark-created-pod", "name": "benchmark-created-pod", "type": "pod", "cloud": "k8s"},
+    {"id": "k8s:node:cluster:benchmark-node", "name": "benchmark-node", "type": "node", "cloud": "k8s"}
+  ],
+  "edges": [
+    {"fact_id": "simple-01-a", "source": "k8s:serviceaccount:application:webapp", "target": "k8s:secret:application:deployer-credential", "type": "secretsRead", "permission": "get", "source_tool": "clusterhound"},
+    {"fact_id": "simple-01-a-artifact", "source": "k8s:secret:application:deployer-credential", "target": "k8s:serviceaccount:application:deployer", "type": "storesCredentialFor", "source_tool": "benchmark_observation", "credential_value": null},
+    {"fact_id": "simple-01-b", "source": "k8s:serviceaccount:application:deployer", "target": "k8s:secret:production:production-db-secret", "type": "secretsRead", "permission": "get", "source_tool": "clusterhound"},
+    {"fact_id": "simple-01-c", "source": "k8s:serviceaccount:application:webapp", "target": "k8s:pod:application:benchmark-created-pod", "type": "canCreateWorkload", "permission": "create", "source_tool": "clusterhound"},
+    {"fact_id": "simple-01-d-denied", "source": "k8s:serviceaccount:application:webapp", "target": "k8s:node:cluster:benchmark-node", "type": "nodesProxyRCE", "permission": "get nodes/proxy", "source_tool": "benchmark_observation", "authorized": false},
+    {"fact_id": "simple-01-e", "source": "k8s:serviceaccount:application:webapp", "target": "k8s:configmap:application:public-config", "type": "configMapsRead", "permission": "get", "source_tool": "benchmark_observation"},
+    {"fact_id": "simple-01-f", "source": "k8s:serviceaccount:application:webapp", "target": "k8s:pod:application:benchmark-created-pod", "type": "canExec", "permission": "create pods/exec", "source_tool": "clusterhound"}
+  ],
+  "metadata": {"scenario_id": "simple-01", "credentials": "references-only", "local_only": true}
+}

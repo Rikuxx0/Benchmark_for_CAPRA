@@ -1,0 +1,44 @@
+{
+  "benchmark_version": "0.1.0",
+  "scenario_id": "simple-01",
+  "scenario_version": "1.0.0",
+  "timestamp": "2026-10-06T00:00:00Z",
+  "capra_version": "fixture-0.1",
+  "capra_commit": "0000000000000000000000000000000000000000",
+  "redagent_version": "fixture-0.1",
+  "redagent_commit": "0000000000000000000000000000000000000000",
+  "llm_provider": "fixture",
+  "llm_model": "fixture-model",
+  "llm_parameters": {
+    "temperature": 0,
+    "seed": 42
+  },
+  "execution_results": [
+    {
+      "operator_id": "op-a",
+      "status": "rejected",
+      "elapsed_seconds": 0.02
+    }
+  ],
+  "stop_reason": "oracle_rejected",
+  "execution_trace": [
+    {
+      "step": 1,
+      "operator_id": "op-a",
+      "status": "rejected",
+      "invalid_action": true,
+      "reason": "fixture invalid concrete plan"
+    }
+  ],
+  "initial_state_digest": "sha256:fixture-initial-state",
+  "synthetic": true,
+  "seed": 42,
+  "run_id": "run-003",
+  "evaluation_mode": "graph_llm_oracle",
+  "goal_reached": false,
+  "steps_to_goal": null,
+  "selected_operator_ids": [
+    "op-a"
+  ],
+  "execution_time_seconds": 0.02
+}

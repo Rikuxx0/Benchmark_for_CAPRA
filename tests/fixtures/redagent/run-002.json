@@ -1,0 +1,53 @@
+{
+  "benchmark_version": "0.1.0",
+  "scenario_id": "simple-01",
+  "scenario_version": "1.0.0",
+  "timestamp": "2026-10-06T00:00:00Z",
+  "capra_version": "fixture-0.1",
+  "capra_commit": "0000000000000000000000000000000000000000",
+  "redagent_version": "fixture-0.1",
+  "redagent_commit": "0000000000000000000000000000000000000000",
+  "llm_provider": "fixture",
+  "llm_model": "fixture-model",
+  "llm_parameters": {
+    "temperature": 0,
+    "seed": 42
+  },
+  "execution_results": [
+    {
+      "operator_id": "op-a",
+      "status": "success",
+      "elapsed_seconds": 0.08
+    },
+    {
+      "operator_id": "op-b",
+      "status": "success",
+      "elapsed_seconds": 0.08
+    }
+  ],
+  "stop_reason": "goal_reached",
+  "execution_trace": [
+    {
+      "step": 1,
+      "operator_id": "op-a",
+      "status": "success"
+    },
+    {
+      "step": 2,
+      "operator_id": "op-b",
+      "status": "success"
+    }
+  ],
+  "initial_state_digest": "sha256:fixture-initial-state",
+  "synthetic": true,
+  "seed": 42,
+  "run_id": "run-002",
+  "evaluation_mode": "graph_llm",
+  "goal_reached": true,
+  "steps_to_goal": 2,
+  "selected_operator_ids": [
+    "op-a",
+    "op-b"
+  ],
+  "execution_time_seconds": 0.16
+}

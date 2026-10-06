@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,40}$"
+    },
+    "scenario_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry_points": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "initial": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "initial"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "locality": {
+          "const": "local-only"
+        },
+        "namespaces": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_node_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "locality",
+        "namespaces",
+        "allowed_node_ids"
+      ],
+      "additionalProperties": false
+    },
+    "initial_state": {
+      "type": "object",
+      "properties": {
+        "identities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+          },
+          "uniqueItems": true
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "artifact_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subject_node_id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              },
+              "properties": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "artifact_type",
+              "subject_node_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "identities",
+        "artifacts",
+        "conditions",
+        "state_version"
+      ],
+      "additionalProperties": false
+    },
+    "expected_goal_path": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "scenario_id",
+    "scenario_version",
+    "name",
+    "description",
+    "entry_points",
+    "goals",
+    "resources",
+    "scope",
+    "initial_state",
+    "expected_goal_path"
+  ],
+  "additionalProperties": false
+}

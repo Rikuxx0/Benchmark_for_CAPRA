@@ -1,0 +1,3 @@
+case_id: P-NEG-01
+mutation: append an unknown Operator
+assertion: false_operator_count increases

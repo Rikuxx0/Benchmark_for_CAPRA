@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stable_operator_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_node": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "target_node": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "preconditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "requires": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "artifact_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subject_node_id": {
+                  "type": "string",
+                  "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                },
+                "properties": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "artifact_type",
+                "subject_node_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "produces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "artifact_type": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subject_node_id": {
+                  "type": "string",
+                  "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+                },
+                "properties": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "artifact_type",
+                "subject_node_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "expected_result": {
+            "enum": [
+              "success",
+              "goal",
+              "failure"
+            ]
+          },
+          "goal_contribution": {
+            "enum": [
+              "direct",
+              "indirect",
+              "alternative",
+              "none"
+            ]
+          },
+          "planner_expectation": {
+            "enum": [
+              "generated",
+              "unresolved",
+              "absent"
+            ]
+          },
+          "missing_conditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "failure_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "operator_id",
+          "operator_type",
+          "source_node",
+          "target_node",
+          "preconditions",
+          "requires",
+          "effects",
+          "produces",
+          "expected_result",
+          "goal_contribution",
+          "planner_expectation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_operator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_operator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "type": "boolean"
+          },
+          "artifact": {
+            "type": "object",
+            "properties": {
+              "artifact_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subject_node_id": {
+                "type": "string",
+                "pattern": "^k8s:[a-z_]+:[a-z0-9-]+:[a-z0-9.-]+$"
+              },
+              "properties": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "artifact_type",
+              "subject_node_id"
+            ],
+            "additionalProperties": false
+          },
+          "condition": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "source_operator",
+          "target_operator",
+          "type",
+          "expected"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "expected_goal_paths": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1
+      },
+      "uniqueItems": true
+    },
+    "operator_type_aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "scenario_id",
+    "scenario_version",
+    "operators",
+    "connections",
+    "expected_goal_paths"
+  ],
+  "additionalProperties": false
+}
